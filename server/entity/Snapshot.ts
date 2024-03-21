@@ -6,13 +6,13 @@ export class Snapshot {
     @PrimaryGeneratedColumn('uuid')
     id: number
 
-    @Column()
+    @Column('varchar', { length: 15 })
     code: string
 
-    @Column()
+    @Column('varchar', { length: 15 })
     snowballCode: string
 
-    @Column()
+    @Column('varchar', { length: 15 })
     name: string
 
     @Column('float')
