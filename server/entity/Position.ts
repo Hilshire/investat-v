@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column,
-    CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm"
+import {
+    Entity, PrimaryGeneratedColumn, Column,
+    CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, Relation
+} from "typeorm"
 import { Snapshot } from "."
 
 @Entity('position')
@@ -7,31 +9,31 @@ export class Position {
     @PrimaryGeneratedColumn('uuid')
     id: number
 
-    @Column('varchar', { length: 15})
+    @Column('varchar', { length: 15 })
     code: string
 
-    @Column('int')
+    @Column('float')
     cost: number // 成本
 
-    @Column('int')
+    @Column('float')
     price: number // 成本价
 
     @Column('int')
     count: number
 
-    @Column('timestamp')
+    @Column('bigint')
     timestamp: number
 
     @Column('int')
     year: number
 
-    @OneToOne(() => Snapshot)
+    @OneToOne(() => Snapshot, (snapshot) => snapshot.position)
     @JoinColumn()
-    snapshot: Snapshot
+    snapshot: Relation<Snapshot>
 
     @CreateDateColumn()
     createAt: string;
-  
+
     @UpdateDateColumn()
     lastUpdateAt: string;
 }

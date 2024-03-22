@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToOne, JoinColumn } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToOne, Relation } from "typeorm"
 import { Position } from "."
 
 @Entity('snapshot')
@@ -16,10 +16,13 @@ export class Snapshot {
     name: string
 
     @Column('float')
-    FTWeekHighest: number
+    FTWeekHighest: number // 52周最高
 
     @Column('float')
     FTWeekLowest: number
+
+    @Column('varchar', { length: 15 })
+    exchange: string
 
     @Column('float')
     PE_D: number
@@ -34,21 +37,21 @@ export class Snapshot {
     PB: number
 
     @Column('bigint')
-    outStandingShares: number
+    outStandingShares: number // 总股本
 
     @Column('float')
     EPS: number // earnings per share
 
-    @Column('int')
-    turnoverRate: number 
+    @Column('float')
+    turnoverRate: number
 
-    @Column('int')
+    @Column('float')
     goodwill: number // 净资产中的商誉
 
-    @Column('int')
+    @Column('float')
     increaseThisYear: number
 
-    @Column('int')
+    @Column('bigint')
     productDate: number //发行日期
 
     @Column('float')
@@ -57,18 +60,16 @@ export class Snapshot {
     @Column('float')
     dividendsTTM: number
 
-    @Column('int')
+    @Column('float')
     dividendsRateTTM: number
 
     @Column('float')
     APS: number //每股净资产
 
+    @OneToOne(() => Position, position => position.snapshot)
+    position: Relation<Position>
 
-    @OneToOne(() => Position)
-    @JoinColumn()
-    snapshot: Position
-
-    @Column('timestamp')
+    @Column('bigint')
     timestamp: number
 
     @Column('int')

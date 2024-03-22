@@ -1,8 +1,10 @@
 'use client';
 
-import { Button, Checkbox, Form, type FormProps, Input } from 'antd';
+import { TextField, Button } from '@mui/material'
+import { useState } from 'react';
+import axios from 'axios';
 
-type FieldType = {
+type Parameters = {
     code?: string
     snowballCode?: string
     cost?: number
@@ -10,68 +12,36 @@ type FieldType = {
     count?: number
 };
 
+const fields = [
+    ["股票代码", "code"],
+    ["雪球代码", "snowballCode"],
+    ["成本", "cost"],
+    ["成本价", "price"],
+    ["持股数", "count"]
+]
+
 export default function position() {
-    const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-        console.log('Success:', values);
-    };
+    const [parameters, setParameters] = useState<Parameters>({})
 
-    const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    };
-
-
-    return <div>
-        <Form
-            name="createPositionA"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-        >
-            <Form.Item<FieldType>
-                label="股票代码"
-                name="code"
-                rules={[{ required: true }]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-                label="雪球代码"
-                name="snowballCode"
-                rules={[{ required: true }]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-                label="成本"
-                name="cost"
-                rules={[{ required: true }]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-                label="成本价"
-                name="price"
-                rules={[{ required: true }]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item<FieldType>
-                label="持股数"
-                name="count"
-                rules={[{ required: true }]}
-            >
-                <Input />
-            </Form.Item>
-
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
+    return <div
+        className="m-8"
+    >
+        {
+            fields.map(f => <TextField
+                fullWidth
+                key={f[1]} id={f[1]} label={f[0]}
+                variant="standard"
+                margin="normal"
+                onInput={e =>
+                    setParameters({ ...parameters, [f[1]]: (e.target as HTMLInputElement).value })
+                } />
+            )
+        }
+        <Button variant="contained" onClick={submit}>Submit</Button>
     </div>
+
+    function submit() {
+        console.log(parameters)
+        axios.put('/api/position', parameters).then(res => console.log('---res,', res))
+    }
 }
