@@ -6,10 +6,14 @@ import dayjs from 'dayjs'
 const { AKTOOL_URL: aktoolUrl = 'http://localhost/' } = process.env;
 
 // To handle a GET request to /api
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    let accounts = JSON.parse(req.nextUrl.searchParams.get('account') || '[]')
+    if (!Array.isArray(accounts)) throw new Error('not an array')
     const repo = await getRepo(Position)
-    return NextResponse.json(await repo.find({ relations: { snapshot: true } }))
+    return NextResponse.json(await repo.find({
+      relations: { snapshot: true }, where: accounts.map(account => ({ account }))
+    }))
   } catch (e) {
     console.error(e)
     return NextResponse.json({ status: 0, error: e }, { status: 500 })
@@ -19,7 +23,7 @@ export async function GET() {
 export async function PUT(request: NextRequest) {
   try {
     const req = await request.json()
-    const { code, snowballCode, cost, price, count } = req || {}
+    const { code, snowballCode, cost, price, count, account } = req || {}
 
     const time = getTime()
     const year = time.year()
@@ -39,7 +43,7 @@ export async function PUT(request: NextRequest) {
     position.snapshot = snapshot
     position.timestamp = +time
     position.year = year
-
+    position.account = account
 
     const positionRepo = await getRepo(Position)
     const snapshotRepo = await getRepo(Snapshot)
@@ -70,6 +74,7 @@ function formatXq2Snapshot(xqdata: { [k: string]: any }, code: string, time: day
   const {
     '代码': snowballCode,
     '名称': name,
+    '现价': currentPrice,
     '52周最高': FTWeekHighest,
     '52周最低': FTWeekLowest,
     '交易所': exchange,
@@ -113,6 +118,7 @@ function formatXq2Snapshot(xqdata: { [k: string]: any }, code: string, time: day
   snapshot.APS = APS
   snapshot.timestamp = +time
   snapshot.year = time.year()
+  snapshot.currentPrice = currentPrice
 
   return snapshot
 }

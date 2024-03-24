@@ -27,6 +27,9 @@ export class Position {
     @Column('int')
     year: number
 
+    @Column('int', { default: 1 })
+    account: number
+
     @OneToOne(() => Snapshot, (snapshot) => snapshot.position)
     @JoinColumn()
     snapshot: Relation<Snapshot>

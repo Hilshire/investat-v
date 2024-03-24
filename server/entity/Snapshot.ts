@@ -16,6 +16,9 @@ export class Snapshot {
     name: string
 
     @Column('float')
+    currentPrice: number
+
+    @Column('float')
     FTWeekHighest: number // 52周最高
 
     @Column('float')
@@ -42,25 +45,25 @@ export class Snapshot {
     @Column('float')
     EPS: number // earnings per share
 
-    @Column('float')
+    @Column('float', { nullable: true })
     turnoverRate: number
 
-    @Column('float')
+    @Column('float', { nullable: true })
     goodwill: number // 净资产中的商誉
 
     @Column('float')
     increaseThisYear: number
 
-    @Column('bigint')
+    @Column('bigint', { nullable: true })
     productDate: number //发行日期
 
     @Column('float')
     APC: number // 资产净值/总市值
 
-    @Column('float')
+    @Column('float', { nullable: true })
     dividendsTTM: number
 
-    @Column('float')
+    @Column('float', { nullable: true })
     dividendsRateTTM: number
 
     @Column('float')
