@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    experimental: {
+        serverComponentsExternalPackages: [
+            'typeorm',
+            'bcryptjs',
+            'jsonwebtoken',
+            'mysql'
+        ]
+    }
+};
 
 export default nextConfig;
