@@ -6,11 +6,13 @@ export interface JwtDecode {
 }
 
 export default (handler?: (...args: any[]) => Promise<NextResponse>) => async (req: NextRequest) => {
+  console.error('[dev] cookies:', req.cookies.toString())
   try {
     if (!req.cookies.has('token')) {
       return handlerError();
     }
     try {
+      console.error('[dev] compare:', req.cookies.get('token')?.value)
       jwt.verify(req.cookies.get('token')?.value || '', process.env.SECRET_KEY || '');
       return handler?.(req);
     } catch (e) {
