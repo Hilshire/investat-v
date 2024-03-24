@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { Position } from "@/server/entity"
 import { getRepo } from "@/utils"
+import { jwt } from "@/middleware";
 
 
-export async function GET() {
+export const GET = jwt(async function GET() {
     try {
         const repo = await getRepo(Position)
         const days = await repo.createQueryBuilder("position")
@@ -11,9 +12,9 @@ export async function GET() {
             .distinct(true)
             .orderBy("position.timestamp")
             .getMany()
-        return NextResponse.json({ status: 1, result: days })
+        return NextResponse.json({ code: 1, result: days })
     } catch (e) {
         console.error(e)
-        return NextResponse.json({ status: 0, error: e }, { status: 500 })
+        return NextResponse.json({ code: 0, error: e }, { status: 500 })
     }
-}
+})

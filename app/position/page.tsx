@@ -2,7 +2,7 @@
 
 import { TextField, Button, Select, MenuItem, FormControl } from '@mui/material'
 import { useState } from 'react';
-import axios from 'axios';
+import axios from '@/server/api';
 
 type Parameters = {
     code?: string

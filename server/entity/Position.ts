@@ -30,6 +30,9 @@ export class Position {
     @Column('int', { default: 1 })
     account: number
 
+    @Column('text', { nullable: true })
+    comment: string
+
     @OneToOne(() => Snapshot, (snapshot) => snapshot.position)
     @JoinColumn()
     snapshot: Relation<Snapshot>

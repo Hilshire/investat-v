@@ -2,11 +2,11 @@ import { NextResponse, NextRequest } from "next/server";
 import { Position, Snapshot } from "@/server/entity"
 import { getRepo } from "@/utils"
 import dayjs from 'dayjs'
+import { jwt } from "@/middleware";
 
 const { AKTOOL_URL: aktoolUrl = 'http://localhost/' } = process.env;
 
-// To handle a GET request to /api
-export async function GET(req: NextRequest) {
+export const GET = jwt(async function GET(req: NextRequest) {
   try {
     let accounts = JSON.parse(req.nextUrl.searchParams.get('account') || '[]')
     if (!Array.isArray(accounts)) throw new Error('not an array')
@@ -16,11 +16,11 @@ export async function GET(req: NextRequest) {
     }))
   } catch (e) {
     console.error(e)
-    return NextResponse.json({ status: 0, error: e }, { status: 500 })
+    return NextResponse.json({ code: 0, error: e }, { status: 500 })
   }
-}
+})
 
-export async function PUT(request: NextRequest) {
+export const PUT = jwt(async function PUT(request: NextRequest) {
   try {
     const req = await request.json()
     const { code, snowballCode, cost, price, count, account } = req || {}
@@ -50,12 +50,12 @@ export async function PUT(request: NextRequest) {
     await snapshotRepo.save(snapshot)
     await positionRepo.save(position)
 
-    return NextResponse.json({ status: 1, result: xqData })
+    return NextResponse.json({ code: 1, result: xqData })
   } catch (e) {
     console.error(e)
-    return NextResponse.json({ status: 0, error: e }, { status: 200 });
+    return NextResponse.json({ code: 0, error: e }, { status: 200 });
   }
-}
+})
 
 async function createSnapshot(snowBallCode: string) {
   const res = await fetch(aktoolUrl + 'api/public/stock_individual_spot_xq?symbol=' + snowBallCode.toUpperCase())

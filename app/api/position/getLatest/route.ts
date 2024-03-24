@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { Position } from "@/server/entity"
 import { getRepo } from "@/utils"
+import { jwt } from "@/middleware";
 
-export async function GET() {
+export const GET = jwt(async function GET() {
     try {
         const repo = await getRepo(Position)
         const timestamp = (await repo.createQueryBuilder("position")
@@ -12,11 +13,11 @@ export async function GET() {
             .getOne())?.timestamp
 
         return NextResponse.json({
-            status: 1,
+            code: 1,
             result: await repo.find({ where: { timestamp }, relations: { snapshot: true } })
         })
     } catch (e) {
         console.error(e)
-        return NextResponse.json({ status: 0, error: e }, { status: 500 })
+        return NextResponse.json({ code: 0, error: e }, { status: 500 })
     }
-}
+})

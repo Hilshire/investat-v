@@ -1,8 +1,8 @@
 'use client'
 
-import axios from "axios";
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Position } from '@/server/entity/Position'
+import axios from '@/server/api';
 
 export default function Home() {
   const [latest, setLatest] = useState<Position[]>([])
@@ -14,7 +14,8 @@ export default function Home() {
     if (!initialized.current) {
       initialized.current = true
       getLatest().then(r => {
-        setLatest(r.data.result)
+        if (Array.isArray(r.data.result))
+          setLatest(r.data.result)
       })
     }
   }, [])
@@ -55,7 +56,7 @@ function getLatest() {
   return axios.get('/api/position/getLatest', { params: { account: '[1]' } })
 }
 
-function getPositionDetail(positions: Position[]) {
+function getPositionDetail(positions: Position[] = []) {
   return {
     totalCost: getTotalCost(positions),
     totalAsset: getTotalAsset(positions),
