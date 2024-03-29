@@ -39,6 +39,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       时间{(new Date(+latest[0]?.timestamp)).toLocaleString()}
+      收益率：{((positionDetail.totalAsset - positionDetail.totalCost) / positionDetail.totalAsset * 100).toFixed(2)}%
       <Card className="mb-8 w-full">
         <CardContent>
           <DataGrid
