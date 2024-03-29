@@ -1,5 +1,7 @@
 import type { GridColDef } from '@mui/x-data-grid'
 import { Position } from "@/server/entity"
+import { Button } from '@mui/material'
+import { emitter } from './emitt'
 
 export function getPositionDetail(positions: Position[] = []) {
     return {
@@ -10,6 +12,13 @@ export function getPositionDetail(positions: Position[] = []) {
 }
 
 export const ratioColumns: GridColDef[] = [
+    {
+        field: 'action',
+        headerName: 'action',
+        renderCell: (p) => <Button onClick={() => emitter.emit('ratio:refresh', p.row)}>
+            🔄
+        </Button>
+    },
     { field: 'name', headerName: '名称' },
     { field: 'currentPrice', headerName: '现价' },
     { field: 'cost', headerName: '成本' },

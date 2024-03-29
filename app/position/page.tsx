@@ -4,13 +4,14 @@ import { TextField, Button, Select, MenuItem, FormControl } from '@mui/material'
 import { useState } from 'react';
 import axios from '@/server/api';
 
-type Parameters = {
+export type Parameters = {
     code?: string
     snowballCode?: string
     cost?: number
     price?: number
     count?: number
     account?: number
+    comment?: string
 };
 
 const fields = [
@@ -19,6 +20,7 @@ const fields = [
     ["成本", "cost"],
     ["成本价", "price"],
     ["持股数", "count"],
+    ["评论", "comment", { multiline: true }]
 ]
 
 export default function position() {
@@ -28,12 +30,13 @@ export default function position() {
         {
             fields.map(f => <TextField
                 fullWidth
-                key={f[1]} id={f[1]} label={f[0]}
+                key={f[1] as string} id={f[1] as string} label={f[0] as string}
                 variant="standard"
                 margin="normal"
                 onInput={e =>
-                    setParameters({ ...parameters, [f[1]]: (e.target as HTMLInputElement).value })
-                } />
+                    setParameters({ ...parameters, [f[1] as string]: (e.target as HTMLInputElement).value })
+                }
+                {...(f[2] as Record<string, any> || {})} />
             )
         }
         <FormControl fullWidth variant="standard" margin='normal'>

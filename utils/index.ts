@@ -11,4 +11,12 @@ export async function getManager() {
   return (await prepareConnection()).manager
 }
 
+export const pick = <T, K extends keyof T = keyof T>(object: T, keys: K[]): Pick<T, K> =>
+  keys.reduce((obj, key) => {
+    if (object && Object.prototype.hasOwnProperty.call(object, key)) {
+      obj[key] = object[key]
+    }
+    return obj
+  }, {} as Pick<T, K>);
+
 export * from './type';

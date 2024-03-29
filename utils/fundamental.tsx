@@ -1,7 +1,16 @@
 import type { GridColDef } from '@mui/x-data-grid'
 import { Position } from "@/server/entity"
+import { Button } from '@mui/material'
+import { emitter } from './emitt'
 
 export const fundColumns: GridColDef[] = [
+    {
+        field: 'action',
+        headerName: 'action',
+        renderCell: (p) => <Button onClick={() => emitter.emit('ratio:refresh', p.row)}>
+            🔄
+        </Button>
+    },
     { field: 'name', headerName: '名称' },
     { field: 'dividendsRateTTM', headerName: "分红率", type: 'number', valueFormatter: (v: number) => parseFloat(v.toFixed(3)) + '%' },
     { field: 'PE', headerName: 'PE', type: 'number' },

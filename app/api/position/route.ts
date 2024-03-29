@@ -23,7 +23,7 @@ export const GET = jwt(async function GET(req: NextRequest) {
 export const PUT = jwt(async function PUT(request: NextRequest) {
   try {
     const req = await request.json()
-    const { code, snowballCode, cost, price, count, account } = req || {}
+    const { code, snowballCode, cost, price, count, account, comment } = req || {}
 
     const time = getTime()
     const year = time.year()
@@ -36,7 +36,7 @@ export const PUT = jwt(async function PUT(request: NextRequest) {
     const snapshot = formatXq2Snapshot(xqData, code, time)
 
     const position = new Position()
-    position.code = code
+    position.code = code.trim()
     position.cost = +cost
     position.count = +count
     position.price = +price
@@ -44,6 +44,7 @@ export const PUT = jwt(async function PUT(request: NextRequest) {
     position.timestamp = +time
     position.year = year
     position.account = account
+    position.comment = comment
 
     const positionRepo = await getRepo(Position)
     const snapshotRepo = await getRepo(Snapshot)
