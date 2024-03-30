@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { Position } from "@/server/entity"
 import { getRepo } from "@/utils"
 import { jwt } from "@/middleware";
-import { createQueryBuilder } from "typeorm";
 
 export const GET = jwt(async function GET(req: NextRequest) {
     try {
@@ -15,7 +14,6 @@ export const GET = jwt(async function GET(req: NextRequest) {
             .orderBy("position.timestamp", 'DESC')
             .getOne())?.timestamp
 
-        console.log('---hh', timestamp)
         return NextResponse.json({
             code: 1,
             result: await repo.createQueryBuilder('p')

@@ -9,11 +9,18 @@ const { AKTOOL_URL: aktoolUrl = 'http://localhost/' } = process.env;
 export const GET = jwt(async function GET(req: NextRequest) {
   try {
     let accounts = JSON.parse(req.nextUrl.searchParams.get('account') || '[]')
+    let timestamp = +(req.nextUrl.searchParams.get('timeStamp') || 0)
     if (!Array.isArray(accounts)) throw new Error('not an array')
+
     const repo = await getRepo(Position)
-    return NextResponse.json(await repo.find({
-      relations: { snapshot: true }, where: accounts.map(account => ({ account }))
-    }))
+
+    const positions = await repo.createQueryBuilder('p')
+      .leftJoinAndSelect("p.snapshot", "snapshot")
+      .where('p.account in (:accounts)', { accounts })
+      .andWhere('p.timestamp = :timestamp', { timestamp })
+      .getMany()
+
+    return NextResponse.json({ code: 1, result: positions })
   } catch (e) {
     console.error(e)
     return NextResponse.json({ code: 0, error: e }, { status: 500 })
@@ -66,7 +73,7 @@ async function createSnapshot(snowBallCode: string) {
 
 function getTime() {
   const timeStamp = +new Date()
-  const time = dayjs(timeStamp).startOf('day')
+  const time = dayjs(timeStamp).endOf('week')
 
   return time
 }

@@ -12,7 +12,6 @@ export default (handler?: (...args: any[]) => Promise<NextResponse>) => async (r
       return handlerError();
     }
     try {
-      console.error('[dev] compare:', req.cookies.get('token')?.value)
       jwt.verify(req.cookies.get('token')?.value || '', process.env.SECRET_KEY || '');
       return handler?.(req);
     } catch (e) {
