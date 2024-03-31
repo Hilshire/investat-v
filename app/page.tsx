@@ -57,6 +57,7 @@ export default function Home() {
           <FormControlLabel value={2} control={<Radio />} label='红利'></FormControlLabel>
         </RadioGroup>
         <Button onClick={() => handleSubmit(selectDay, selectAccount)}>Submit</Button>
+        <Button onClick={handleRepair}>Repair</Button>
       </Grid>
 
       <Grid item xs={10}>
@@ -102,6 +103,12 @@ function refresh(r: Partial<Position>, latest: Position[]) {
   axios.put('/api/position', p)
 }
 
+function handleRepair() {
+  return axios.post('/api/repair').then(res => {
+    console.log(res)
+    return res
+  })
+}
 
 
 function getLatest(params = { account: '[1]' }) {
