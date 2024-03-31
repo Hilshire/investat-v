@@ -4,14 +4,13 @@ import { Profit, PE, Price } from '@/components/chart/stock/';
 import axios from '@/server/api';
 import { Snapshot } from '@/server/entity';
 import { Card } from '@mui/material';
-import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react';
 
 export default function Stock() {
-    const code = useSearchParams().get('code')
     const [snapshots, setSnapshots] = useState<Snapshot[]>([])
 
     useEffect(() => {
+        const code = new URLSearchParams(window.location.search).get('code')
         getData(code || '').then(r => {
             if (!r.data.status) return
             setSnapshots(r.data.result)
