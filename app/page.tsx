@@ -11,7 +11,7 @@ import { emitter } from "@/utils/emitt";
 import { pick } from "@/utils";
 import { Parameters } from "./position/page";
 import { Day } from "./api/position/days/route";
-import { RatioPie } from '@/components/chart/RatioPie'
+import { RatioPie, ProfitPE } from '@/components/chart'
 
 export default function Home() {
   const [positions, setPositions] = useState<Position[]>([])
@@ -64,6 +64,7 @@ export default function Home() {
         <p>总资产：{positionDetail.totalAsset}</p>
         <Card className="mb-8 w-full">
           <RatioPie positions={positions} positionDetail={positionDetail}></RatioPie>
+          <ProfitPE positions={positions} />
         </Card>
         <Card className="mb-8 w-full">
           <CardContent>
