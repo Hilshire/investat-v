@@ -48,7 +48,7 @@ export default function Home() {
 
   return (
     <Grid container spacing={2} className="p-8">
-      <Grid xs={2}>
+      <Grid item xs={2}>
         <RadioGroup value={selectDay} onChange={(e) => setSelectDay(e.target.value)}>
           {days.map(d => <FormControlLabel key={d.timestamp} value={d.timestamp} control={<Radio />} label={new Date(+d.timestamp).toLocaleDateString()} />)}
         </RadioGroup>
@@ -59,7 +59,7 @@ export default function Home() {
         <Button onClick={() => handleSubmit(selectDay, selectAccount)}>Submit</Button>
       </Grid>
 
-      <Grid xs={10}>
+      <Grid item xs={10}>
         <p>时间{(new Date(+positions[0]?.timestamp)).toLocaleDateString()}</p>
         <p>总资产：{positionDetail.totalAsset}</p>
         <Card className="mb-8 w-full">

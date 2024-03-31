@@ -2,6 +2,7 @@ import type { GridColDef } from '@mui/x-data-grid'
 import { Position } from "@/server/entity"
 import { Button } from '@mui/material'
 import { emitter } from './emitt'
+import Link from 'next/link'
 
 export function getPositionDetail(positions: Position[] = []) {
     return {
@@ -19,7 +20,11 @@ export const ratioColumns: GridColDef[] = [
             🔄
         </Button>
     },
-    { field: 'name', headerName: '名称' },
+    {
+        field: 'name',
+        headerName: '名称',
+        renderCell: (d) => <Link style={{ color: 'cadetblue', textDecoration: 'underline' }} href={'/stock?code=' + d.row.code}>{d.row.name}</Link>
+    },
     { field: 'currentPrice', headerName: '现价' },
     { field: 'cost', headerName: '成本' },
     { field: 'price', headerName: '成本价' },
@@ -42,6 +47,7 @@ export const calcRatioRow = (positions: Position[], positionDetail: ReturnType<t
     const row = {
         id: p.id,
         name: p.snapshot.name,
+        code: p.code,
         cost: p.cost,
         price: p.price,
         count: p.count,
