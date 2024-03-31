@@ -11,13 +11,13 @@ export const GET = jwt(async function Get(req: NextRequest) {
         const repo = await getRepo(Snapshot)
 
         return NextResponse.json({
-            status: 1, result: await repo.find({
+            code: 1, result: await repo.find({
                 relations: ['position'],
                 where: { code }
             })
         })
     } catch (e) {
         console.error(e)
-        return NextResponse.json({ code: 0, error: e }, { status: 500 })
+        return NextResponse.json({ code: 0, error: e + '' }, { status: 500 })
     }
 })

@@ -3,6 +3,9 @@ import { Position, Snapshot } from "@/server/entity"
 import { getRepo } from "@/utils"
 import dayjs from 'dayjs'
 import { jwt } from "@/middleware";
+import isoWeek from 'dayjs/plugin/isoWeek'
+
+dayjs.extend(isoWeek)
 
 const { AKTOOL_URL: aktoolUrl = 'http://localhost/' } = process.env;
 
@@ -23,7 +26,7 @@ export const GET = jwt(async function GET(req: NextRequest) {
     return NextResponse.json({ code: 1, result: positions })
   } catch (e) {
     console.error(e)
-    return NextResponse.json({ code: 0, error: e }, { status: 500 })
+    return NextResponse.json({ code: 0, error: e + '' }, { status: 500 })
   }
 })
 
@@ -42,6 +45,13 @@ export const PUT = jwt(async function PUT(request: NextRequest) {
 
     const snapshot = formatXq2Snapshot(xqData, code, time)
 
+    const positionRepo = await getRepo(Position)
+    const snapshotRepo = await getRepo(Snapshot)
+
+    const positionExist = await positionRepo.findOne({ where: { code, timestamp: +time } })
+    const snapshotExist = await snapshotRepo.findOne({ where: { code, timestamp: +time } })
+    if (positionExist || snapshotExist) throw new Error('data exist')
+
     const position = new Position()
     position.code = code.trim()
     position.cost = +cost
@@ -53,15 +63,13 @@ export const PUT = jwt(async function PUT(request: NextRequest) {
     position.account = account
     position.comment = comment
 
-    const positionRepo = await getRepo(Position)
-    const snapshotRepo = await getRepo(Snapshot)
     await snapshotRepo.save(snapshot)
     await positionRepo.save(position)
 
     return NextResponse.json({ code: 1, result: xqData })
   } catch (e) {
     console.error(e)
-    return NextResponse.json({ code: 0, error: e }, { status: 200 });
+    return NextResponse.json({ code: 0, error: e + '' }, { status: 200 });
   }
 })
 
@@ -73,7 +81,7 @@ async function createSnapshot(snowBallCode: string) {
 
 function getTime() {
   const timeStamp = +new Date()
-  const time = dayjs(timeStamp).endOf('week')
+  const time = dayjs(timeStamp).isoWeekday(7).endOf('day')
 
   return time
 }

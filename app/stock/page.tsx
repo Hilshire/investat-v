@@ -12,7 +12,7 @@ export default function Stock() {
     useEffect(() => {
         const code = new URLSearchParams(window.location.search).get('code')
         getData(code || '').then(r => {
-            if (!r.data.status) return
+            if (!r.data.code) return
             setSnapshots(r.data.result)
         }).catch(e => console.error(e))
     }, [])

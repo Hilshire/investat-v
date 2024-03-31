@@ -18,6 +18,6 @@ export const GET = jwt(async function GET() {
         return NextResponse.json({ code: 1, result: days })
     } catch (e) {
         console.error(e)
-        return NextResponse.json({ code: 0, error: e }, { status: 500 })
+        return NextResponse.json({ code: 0, error: e + '' }, { status: 500 })
     }
 })

@@ -1,5 +1,5 @@
 import { DataSourceOptions, DataSource } from 'typeorm';
-import { Position, Snapshot } from './entity';
+import { InveSnapshot, Position, Snapshot } from './entity';
 
 const {
   DATABASE_HOST: host = 'localhost',
@@ -15,7 +15,7 @@ export function prepareConnection() {
     appDataSource = (async () => {
       const appDataSource = new DataSource(
         Object.assign(getOption(), {
-          entities: [Position, Snapshot],
+          entities: [Position, Snapshot, InveSnapshot],
         }),
       );
 

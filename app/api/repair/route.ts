@@ -15,7 +15,7 @@ export async function POST() {
     await Promise.all(dirties.map(d => repo.delete(d.id)))
 
     return NextResponse.json({
-        status: 1,
+        code: 1,
         result: dirties
     })
 

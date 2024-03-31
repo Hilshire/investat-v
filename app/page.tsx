@@ -12,6 +12,7 @@ import { pick } from "@/utils";
 import { Parameters } from "./position/page";
 import { Day } from "./api/position/days/route";
 import { RatioPie, ProfitPE } from '@/components/chart'
+import { Market } from '@/components'
 
 export default function Home() {
   const [positions, setPositions] = useState<Position[]>([])
@@ -23,6 +24,7 @@ export default function Home() {
   const initialized = useRef(false)
 
   const [selectDay, setSelectDay] = useState<string | null>(null)
+  const [currentDay, setCurrentDay] = useState<string | null>(null)
   const [selectAccount, setSelectAccount] = useState<string | number>(1)
 
   useLayoutEffect(() => {
@@ -33,6 +35,7 @@ export default function Home() {
         if (Array.isArray(r.data.result)) {
           setPositions(r.data.result)
           setSelectDay(r.data.result[0].timestamp)
+          setCurrentDay(r.data.result[0].timestamp)
         }
       })
 
@@ -56,13 +59,16 @@ export default function Home() {
           <FormControlLabel value={1} control={<Radio />} label='普通'></FormControlLabel>
           <FormControlLabel value={2} control={<Radio />} label='红利'></FormControlLabel>
         </RadioGroup>
-        <Button onClick={() => handleSubmit(selectDay, selectAccount)}>Submit</Button>
-        <Button onClick={handleRepair}>Repair</Button>
+        <Button onClick={() => handleSubmit(selectDay, selectAccount)}>Search</Button>
+        {/* <Button onClick={handleRepair}>Repair</Button> */}
+        <Button onClick={() => createInveSnapshot(positionDetail, currentDay)}>Shoot</Button>
       </Grid>
 
       <Grid item xs={10}>
         <p>时间{(new Date(+positions[0]?.timestamp)).toLocaleDateString()}</p>
         <p>总资产：{positionDetail.totalAsset}</p>
+        <Market />
+
         <Card className="mb-8 w-full">
           <RatioPie positions={positions} positionDetail={positionDetail}></RatioPie>
           <ProfitPE positions={positions} />
@@ -85,8 +91,9 @@ export default function Home() {
     </Grid>
   );
 
-  async function handleSubmit(selectDay: number | string | null, selectAccount: number | string) {
+  async function handleSubmit(selectDay: string | null, selectAccount: number | string) {
     const latest = await getPositions({ timeStamp: selectDay, account: `[${selectAccount}]` })
+    setCurrentDay(selectDay)
     setPositions(latest.data.result)
   }
 }
@@ -121,6 +128,11 @@ function getDays() {
 
 function getPositions(params: any) {
   return axios.get('/api/position', { params })
+}
+
+function createInveSnapshot(positionDetail: any, timestamp: string | null) {
+  if (!timestamp) return
+  return axios.post('/api/inveSnapshot', { positionDetail, timestamp })
 }
 
 

@@ -25,6 +25,6 @@ export const GET = jwt(async function GET(req: NextRequest) {
         })
     } catch (e) {
         console.error(e)
-        return NextResponse.json({ code: 0, error: e }, { status: 500 })
+        return NextResponse.json({ code: 0, error: e + '' }, { status: 500 })
     }
 })
