@@ -11,6 +11,7 @@ import { emitter } from "@/utils/emitt";
 import { pick } from "@/utils";
 import { Parameters } from "./position/page";
 import { Day } from "./api/position/days/route";
+import { RatioPie } from '@/components/chart/RatioPie'
 
 export default function Home() {
   const [positions, setPositions] = useState<Position[]>([])
@@ -61,9 +62,9 @@ export default function Home() {
       <Grid xs={10}>
         <p>时间{(new Date(+positions[0]?.timestamp)).toLocaleDateString()}</p>
         <p>总资产：{positionDetail.totalAsset}</p>
-        <p>总成本：{positionDetail.totalCost}</p>
-        <p>总投入：{positionDetail.totalPriceCost}</p>
-        <p>收益率：{((positionDetail.totalAsset - positionDetail.totalCost) / positionDetail.totalAsset * 100).toFixed(2)}%</p>
+        <Card className="mb-8 w-full">
+          <RatioPie positions={positions} positionDetail={positionDetail}></RatioPie>
+        </Card>
         <Card className="mb-8 w-full">
           <CardContent>
             <DataGrid
