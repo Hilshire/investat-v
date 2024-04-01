@@ -14,7 +14,7 @@ export const POST = jwt(async function POST(res: NextRequest) {
 
         const repo = await getRepo(InveSnapshot)
 
-        const exist = !!await repo.find({ where: { timestamp } })
+        const exist = await repo.findOne({ where: { timestamp } })
         if (exist) throw new Error('data exist')
 
         const inveSnapshot = new InveSnapshot()

@@ -9,7 +9,7 @@ export class InveSnapshot {
     id: number
 
     @Column('bigint')
-    timestamp: number
+    timestamp: string
 
     @Column('float')
     totalAsset: number
