@@ -10,7 +10,7 @@ export function Price({ snapshots }: { snapshots: Snapshot[] }) {
             source: snapshots.map((s) => ({
                 timestamp: s.timestamp,
                 price: s.currentPrice
-            }))
+            })).sort((a, b) => a.timestamp - b.timestamp)
         }
         return result
     }, [snapshots])

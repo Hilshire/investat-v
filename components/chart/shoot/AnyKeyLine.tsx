@@ -30,20 +30,20 @@ export function AnyKeyLine({ snapshots, spKey, option = {} }: { snapshots: Snaps
     const dataset = useMemo(() => {
         const dimensions = [
             'timestamp',
-            ...snapshots.map(s => s.name)
+            ...snapshots.map(s => s.name),
         ]
         const source = Object.keys(groupByTime).map(time => {
-            const result: any = { timestamp: time }
+            const result: any = { timestamp: +time }
 
             groupByTime[time].forEach(sp => result[sp.name] = sp[spKey])
 
             return result
-        })
+        }).sort((p, n) => p.timestamp - n.timestamp)
 
-        const result = {
+        const result = [{
             dimensions,
             source
-        }
+        }]
 
         return result
     }, [snapshots])
@@ -66,8 +66,8 @@ export function AnyKeyLine({ snapshots, spKey, option = {} }: { snapshots: Snaps
             }
         },
         series: names.map(() => ({ type: 'line', label: { show: true } })),
-        tooltip: { trigger: 'axis' }
+        tooltip: { trigger: 'axis' },
     }
 
-    return <ReactECharts option={{ ...baseOption, ...option }} />
+    return <ReactECharts option={{ ...baseOption, ...option }} style={{ height: '500px' }} />
 } 

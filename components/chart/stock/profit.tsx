@@ -11,7 +11,7 @@ export function Profit({ snapshots }: { snapshots: Snapshot[] }) {
                 timestamp: s.timestamp,
                 profit: (s.currentPrice - s.position.price) / s.currentPrice * 100,
                 dividendsRateTTM: s.dividendsRateTTM
-            }))
+            })).sort((a, b) => a.timestamp - b.timestamp)
         }
         return result
     }, [snapshots])

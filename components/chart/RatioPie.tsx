@@ -74,12 +74,22 @@ export function RatioPie(props: Props) {
             show: true,
             orient: 'horizontal',
         },
+        label: {
+            formatter: '{name|{b}}\n{time|{d} %}',
+            lineHeight: 15,
+            rich: {
+                time: {
+                    fontSize: 10,
+                    color: '#999'
+                }
+            }
+        },
         xAxis: {
             type: 'category',
             data: positions.map(p => p.snapshot.name)
         },
         yAxis: {
-            type: 'value'
+            type: 'value',
         },
         grid: { top: '55%' },
         series: [{
@@ -125,6 +135,7 @@ export function RatioPie(props: Props) {
             type: 'bar',
             data: earnData,
             colorBy: 'data',
+            sort: 'descending',
             label: {
                 show: true,
                 formatter: (p: any) => (p.data * 100).toFixed(2) + '%',

@@ -54,10 +54,15 @@ export default function Shoot() {
         </Card>
 
         <Card>
+            <AnyKeyLine snapshots={sps} spKey='EPS' option={{ title: { text: 'EPS' } }} />
             <AnyKeyLine snapshots={sps} spKey='PE' option={{ title: { text: 'PE' } }} />
             <AnyKeyLine snapshots={sps} spKey='PE_D' option={{ title: { text: 'PE(D)' } }} />
             <AnyKeyLine snapshots={sps} spKey='PE_TTM' option={{ title: { text: 'PE(TTM)' } }} />
             <AnyKeyLine snapshots={sps} spKey='dividendsRateTTM' option={{ title: { text: '股息率' } }} />
+        </Card>
+
+        <Card>
+            <AnyKeyLine snapshots={sps} spKey='APS' option={{ title: { text: 'APS' } }} />
             <AnyKeyLine snapshots={sps} spKey='PB' option={{ title: { text: 'PB' } }} />
         </Card>
     </div>

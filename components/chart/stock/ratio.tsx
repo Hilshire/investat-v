@@ -10,7 +10,7 @@ export function Ratio({ snapshots, totalAsset }: { snapshots: Snapshot[], totalA
             source: snapshots.map((s) => ({
                 timestamp: s.timestamp,
                 ratio: (s.currentPrice * s.position.count / (totalAsset || Infinity) * 100).toFixed(2)
-            }))
+            })).sort((a, b) => a.timestamp - b.timestamp)
         }
         return result
     }, [snapshots])

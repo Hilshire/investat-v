@@ -40,7 +40,7 @@ export function AnyPositionFnLine({ snapshots, fn, option = {} }: { snapshots: S
             groupByTime[time].forEach(sp => result[sp.name] = fn(sp, time))
 
             return result
-        })
+        }).sort((p, n) => p.timestamp - n.timestamp)
 
         const result = {
             dimensions,
@@ -71,5 +71,5 @@ export function AnyPositionFnLine({ snapshots, fn, option = {} }: { snapshots: S
         tooltip: { trigger: 'axis' }
     }
 
-    return <ReactECharts option={{ ...baseOption, ...option }} />
+    return <ReactECharts option={{ ...baseOption, ...option }} style={{ height: '500px' }} />
 } 

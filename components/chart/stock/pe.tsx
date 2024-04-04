@@ -12,7 +12,7 @@ export function PE({ snapshots }: { snapshots: Snapshot[] }) {
                 'PE（静)': s.PE,
                 'PE（动）': s.PE_D,
                 'PE（TTM)': s.PE_TTM
-            }))
+            })).sort((a, b) => a.timestamp - b.timestamp)
         }
         return result
     }, [snapshots])
