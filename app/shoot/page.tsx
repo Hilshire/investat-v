@@ -64,6 +64,13 @@ export default function Shoot() {
         <Card>
             <AnyKeyLine snapshots={sps} spKey='APS' option={{ title: { text: 'APS' } }} />
             <AnyKeyLine snapshots={sps} spKey='PB' option={{ title: { text: 'PB' } }} />
+            <AnyPositionFnLine
+                snapshots={sps}
+                fn={(sp) => (sp.PE * sp.PB).toFixed(2)}
+                option={{
+                    title: { text: 'PE * PB' },
+                }}
+            />
         </Card>
     </div>
 }
