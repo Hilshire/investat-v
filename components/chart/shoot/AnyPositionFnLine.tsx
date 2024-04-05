@@ -48,7 +48,7 @@ export function AnyPositionFnLine({ snapshots, fn, option = {} }: { snapshots: S
         }
 
         return result
-    }, [snapshots])
+    }, [snapshots, fn])
 
     const baseOption = {
         title: { text: '?' },

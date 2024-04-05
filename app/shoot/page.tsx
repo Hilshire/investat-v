@@ -19,7 +19,11 @@ export default function Shoot() {
         if (!initialized.current) {
             initialized.current = true
 
-            getAll().then(r => {
+            const code = new URLSearchParams(window.location.search).get('code')
+
+            const p = code ? getStock(code) : getAll()
+
+            p.then(r => {
                 if (Array.isArray(r.data.result)) {
                     setSps(r.data.result.filter((p: any) => p?.position?.account === 1))
                 }
@@ -77,4 +81,8 @@ export default function Shoot() {
 
 function getAll() {
     return axios.get('/api/stock/all')
+}
+
+function getStock(code: string | number) {
+    return axios.get('/api/stock', { params: { code } })
 }
