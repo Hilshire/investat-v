@@ -81,7 +81,7 @@ async function createSnapshot(snowBallCode: string) {
 
 function getTime() {
   const timeStamp = +new Date()
-  const time = dayjs(timeStamp).isoWeekday(7).endOf('day')
+  const time = dayjs(timeStamp).isoWeekday(6).endOf('day')
 
   return time
 }
